@@ -5,27 +5,25 @@ from pylab import *
 import time, datetime
 
 
-lloydurl = "https://localdata-sensors.herokuapp.com/api/sources/ci4lr75vd000b02ypdlm6qbly/entries?startIndex=0&count=100000"
-filename="sensordata.txt"
 
-#def get_data_web(url):
-#   # Get data from web
-#   data = urllib.urlopen(lloydurl).read()
-#   l = eval(data)
-#
-#   for i in l:
-#      print l
-
-
-def get_data_local(localfilename):
+def graphdata(source):
+   url = "https://localdata-sensors.herokuapp.com/api/sources/ci4lr75vd000b02ypdlm6qbly/entries?startIndex=0&count=1000000"
+   filename="sensordata.txt"
 
    # Local vars
    time_format = "%Y-%m-%dT%H:%M:%S.000Z"
 
-   # Get data on local file
-   sensordatafile = open(localfilename, "r")
-   sensordataline = sensordatafile.readline()
-   tstampdata = eval(sensordataline)
+   # Get data depending on source: web or file
+   if source=="web":
+      print "Getting data from web"
+      sensordata = urllib.urlopen(url).read()
+   else:
+      print "Getting data from local file"
+      sensordatafile = open(filename, "r")
+      sensordata = sensordatafile.readline()
+
+
+   tstampdata = eval(sensordata)
 
    
    list_ts = []
@@ -95,4 +93,5 @@ def get_data_local(localfilename):
 
 
 # Main
-get_data_local(filename)
+#graphdata("local")
+graphdata("web")
